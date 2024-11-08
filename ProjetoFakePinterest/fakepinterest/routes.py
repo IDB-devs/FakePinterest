@@ -1,5 +1,5 @@
 #criar as rotas do nosso site (os links)
-from flask import render_template, url_for, redirect
+from flask import render_template, url_for, redirect, send_from_directory #permite puxar um arquivo fora do projeto
 from flask_login import login_required, login_user, logout_user, current_user #restricao de login
 from fakepinterest import app, database, bcrypt
 from fakepinterest.models import Usuario, Foto
@@ -13,7 +13,7 @@ def homepage():
     formlogin = FormLogin()
     if formlogin.validate_on_submit():
         usuario = Usuario.query.filter_by(email=formlogin.email.data).first() #encontrando o usuario no banco de dados
-        if usuario and bcrypt.check_password_hash(usuario.senha, formlogin.senha.data): #se usuario existe e senha correta cryptografada
+        if usuario and bcrypt.check_password_hash(usuario.senha.encode('utf-8'), formlogin.senha.data): #se usuario existe e senha correta cryptografada
             login_user(usuario)
             return redirect(url_for('perfil', id_usuario=usuario.id))
     return render_template('homepage.html', form=formlogin)
@@ -23,7 +23,7 @@ def homepage():
 def criar_conta():
     formcriarconta = FormCriarConta()
     if formcriarconta.validate_on_submit():
-        senha = bcrypt.generate_password_hash(FormCriarConta.senha.data)
+        senha = bcrypt.generate_password_hash(FormCriarConta.senha.data).decode('utf-8')
         usuario = Usuario(username=FormCriarConta.username.data, 
                           email=FormCriarConta.email.data, 
                           senha=senha
@@ -49,6 +49,7 @@ def perfil(id_usuario): #mudando o link conforme cada usuario
                                    app.config['UPLOAD_FOLDER'], 
                                    nome_seguro
                                    )
+            #caminho = os.path.join(app.config['UPLOAD_FOLDER'], nome_seguro) #para render na hora do deploy
             arquivo.save(caminho)
             #registrar arquivo no banco de dados
             foto = Foto(imagem=nome_seguro, id_usuario=current_user.id)
@@ -58,6 +59,11 @@ def perfil(id_usuario): #mudando o link conforme cada usuario
     else:
         usuario = Usuario.query.get(int(id_usuario))
         return render_template('perfil.html', usuario=usuario, form=None)
+
+
+@app.route('/uploads/<path:filename>') #caminho de um arquivo no servidor, utilizar nas pags perfil.html e feed.html no lugar do static
+def custom_static(filename): #utilizado para pasta do render na hora do deploy, para n resetar as fotos enviadas
+    return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=True)
 
 
 @app.route('/logout')
