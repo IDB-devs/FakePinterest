@@ -6,7 +6,7 @@ Criação de site replicando Pinterest.
 
 ### Características:
 
-Criação de login, base de dados e upload de imagens.
+Criação de autenticação de login, base de dados para feed principal e upload de imagens.
 
 ### Ferramentas:
 
