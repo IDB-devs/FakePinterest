@@ -1,9 +1,17 @@
 # FakePinterest
 
-Projeto de criação de site replicando Pinterest. Utilizando Criação de login, base de dados e upload de imagens
+### Objetivo:
 
-Utilizando ferramentas:
+Criação de site replicando Pinterest.
+
+### Características:
+
+Criação de login, base de dados e upload de imagens.
+
+### Ferramentas:
+
   - Python
     - Flask
   - Html
   - Css
+
