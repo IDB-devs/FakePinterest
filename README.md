@@ -23,6 +23,6 @@ Criação de autenticação de login, base de dados para feed principal e upload
   - Pasta static -> Pasta para configurações CSS dos arquivos HTMLs e para guardar as imagens staticas que estarão presentes no site, como posts de usuários.
   - Pasta templates -> Pasta para guardar as paginas de HTML (frontend).
   - __init__.py -> Arquivo que quando executado irá iniciar o projeto, carregando as configurações iniciais do site, do banco de dados, e o gerenciamento de login.
-  - forms.py -> Arquivo para criar os formulários de login, criação de conta e upload de imagens que estarão presentes dentro do site.
+  - forms.py -> Arquivo para criar os formulários de login, criação de conta e upload de imagens que estarão presentes dentro do site (backend).
   - models.py -> Arquivo criado para estruturar como os dados dos usuários e das imagens serão armazenadas dentro do banco de dados (backend).
   - routes.py -> Arquivo para gerir o que irá em cada página HTML da pasta templates e como funcionarão (backend).
